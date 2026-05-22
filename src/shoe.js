@@ -3,28 +3,20 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
-import nikeAirUrl    from './assets/shoes-optimized/uploads_files_4278121_Nike_Air_Shoes.glb?url';
-import shoeExpUrl    from './assets/shoes-optimized/uploads_files_4741956_shoe+exp.glb?url';
-import bootsUrl      from './assets/shoes-optimized/uploads_files_6167869_Boots.glb?url';
-import salomonUrl    from './assets/shoes-optimized/salomon_xt6_sneaker_photo_scan.glb?url';
-import vansUrl       from './assets/shoes-optimized/vans_old_skool_navy.glb?url';
-import sneakerB33Url from './assets/shoes-optimized/sneaker_b33.glb?url';
-import sneakerVibeUrl from './assets/shoes-optimized/sneaker_vibe.glb?url';
-import sneakersUrl   from './assets/shoes-optimized/sneakers.glb?url';
-import sneakersSeenUrl from './assets/shoes-optimized/sneakers_seen.glb?url';
-import scanSneakerUrl from './assets/shoes-optimized/reserved_shoe_sneakers_3d_scan.glb?url';
+// Cloudinary URLs for all 3D shoe models
+const CLOUD = 'https://res.cloudinary.com/dmr7zbqwv/raw/upload';
 
 const MODEL_SOURCES = [
-  { url: nikeAirUrl,      name: 'Nike Air' },
-  { url: shoeExpUrl,      name: 'Runner' },
-  { url: bootsUrl,        name: 'Boots' },
-  { url: salomonUrl,      name: 'Salomon XT6' },
-  { url: vansUrl,         name: 'Vans Old Skool' },
-  { url: sneakerB33Url,   name: 'Sneaker B33' },
-  { url: sneakerVibeUrl,  name: 'Sneaker Vibe' },
-  { url: sneakersUrl,     name: 'Sneakers' },
-  { url: sneakersSeenUrl, name: 'Sneakers Seen' },
-  { url: scanSneakerUrl,  name: '3D Scan Sneaker' },
+  { url: `${CLOUD}/v1779413060/shoes-grid-vite/uploads_files_4278121_Nike_Air_Shoes.glb`,       name: 'Nike Air' },
+  { url: `${CLOUD}/v1779413061/shoes-grid-vite/uploads_files_4741956_shoe+exp.glb`,           name: 'Runner' },
+  { url: `${CLOUD}/v1779413062/shoes-grid-vite/uploads_files_6167869_Boots.glb`,               name: 'Boots' },
+  { url: `${CLOUD}/v1779413375/shoes-grid-vite/salomon_xt6_sneaker_photo_scan.glb`,           name: 'Salomon XT6' },
+  { url: `${CLOUD}/v1779413062/shoes-grid-vite/vans_old_skool_navy.glb`,                      name: 'Vans Old Skool' },
+  { url: `${CLOUD}/v1779413057/shoes-grid-vite/sneaker_b33.glb`,                              name: 'Sneaker B33' },
+  { url: `${CLOUD}/v1779413058/shoes-grid-vite/sneaker_vibe.glb`,                             name: 'Sneaker Vibe' },
+  { url: `${CLOUD}/v1779413059/shoes-grid-vite/sneakers.glb`,                                 name: 'Sneakers' },
+  { url: `${CLOUD}/v1779413060/shoes-grid-vite/sneakers_seen.glb`,                           name: 'Sneakers Seen' },
+  { url: `${CLOUD}/v1779413082/shoes-grid-vite/reserved_shoe_sneakers_3d_scan.glb`,           name: '3D Scan Sneaker' },
 ];
 
 export const MODEL_NAMES = MODEL_SOURCES.map(m => m.name);
