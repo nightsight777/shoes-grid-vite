@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FBX → GLB (one-shot)</title>
+    <style>
+      body { font: 15px/1.5 system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; color: #222; }
+      .drop {
+        border: 2px dashed #888; border-radius: 8px; padding: 40px; text-align: center;
+        background: #fafafa; cursor: pointer;
+      }
+      .drop.hover { background: #eef; border-color: #66f; }
+      #log { white-space: pre-wrap; background: #111; color: #0f0; padding: 12px; border-radius: 6px; margin-top: 16px; min-height: 80px; }
+      h1 { margin-top: 0; }
+    </style>
+  </head>
+  <body>
+    <h1>FBX → GLB converter</h1>
+    <p>Drop your <code>.fbx</code> files below. A <code>.glb</code> will be downloaded for each.
+       Drop the resulting files into <code>src/assets/shoesRenderrs/</code>, then run <code>npm run optimize</code>.</p>
+    <div class="drop" id="drop">
+      <strong>Drop .fbx files here</strong>
+      <div>or click to choose</div>
+      <input type="file" id="picker" accept=".fbx" multiple hidden />
+    </div>
+    <pre id="log"></pre>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.184.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from 'three';
+      import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+      import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+      const drop = document.getElementById('drop');
+      const picker = document.getElementById('picker');
+      const log = document.getElementById('log');
+
+      const print = (msg) => { log.textContent += msg + '\n'; };
+
+      const TEX_SLOTS = [
+        'map', 'normalMap', 'specularMap', 'emissiveMap', 'roughnessMap',
+        'metalnessMap', 'aoMap', 'bumpMap', 'displacementMap', 'alphaMap',
+        'envMap', 'lightMap', 'gradientMap',
+      ];
+
+      function isValidImage(img) {
+        if (!img) return false;
+        if (img instanceof HTMLImageElement) return img.complete && img.naturalWidth > 0;
+        if (img instanceof HTMLCanvasElement) return img.width > 0;
+        if (typeof ImageBitmap !== 'undefined' && img instanceof ImageBitmap) return img.width > 0;
+        if (img.data && img.width && img.height) return true;
+        return false;
+      }
+
+      function stripBrokenTextures(root) {
+        let stripped = 0;
+        root.traverse(node => {
+          if (!node.isMesh || !node.material) return;
+          const mats = Array.isArray(node.material) ? node.material : [node.material];
+          for (const mat of mats) {
+            for (const slot of TEX_SLOTS) {
+              const tex = mat[slot];
+              if (tex && !isValidImage(tex.image)) {
+                mat[slot] = null;
+                stripped++;
+              }
+            }
+            mat.needsUpdate = true;
+          }
+        });
+        return stripped;
+      }
+
+      async function convert(file) {
+        print(`reading ${file.name}…`);
+        const buf = await file.arrayBuffer();
+        const obj = new FBXLoader().parse(buf, '');
+        const stripped = stripBrokenTextures(obj);
+        if (stripped) print(`  stripped ${stripped} broken texture reference(s)`);
+        print(`  parsed, exporting GLB…`);
+        const glb = await new Promise((res, rej) => {
+          new GLTFExporter().parse(obj, res, rej, { binary: true });
+        });
+        const outName = file.name.replace(/\.fbx$/i, '.glb');
+        const blob = new Blob([glb], { type: 'model/gltf-binary' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = outName; a.click();
+        URL.revokeObjectURL(url);
+        print(`  → downloaded ${outName} (${(blob.size / 1024).toFixed(1)} KB)`);
+      }
+
+      async function handleFiles(files) {
+        for (const f of files) {
+          try { await convert(f); }
+          catch (e) { print(`ERROR: ${f.name}: ${e.message}`); }
+        }
+      }
+
+      drop.addEventListener('click', () => picker.click());
+      picker.addEventListener('change', () => handleFiles(picker.files));
+      drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('hover'); });
+      drop.addEventListener('dragleave', () => drop.classList.remove('hover'));
+      drop.addEventListener('drop', e => {
+        e.preventDefault(); drop.classList.remove('hover');
+        handleFiles(e.dataTransfer.files);
+      });
+    </script>
+  </body>
+</html>

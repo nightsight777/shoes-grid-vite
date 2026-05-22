@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShoeVue — Inspect Every Angle Before You Buy</title>
+    <meta name="description" content="Shop the most immersive 3D sneaker experience online. Rotate, zoom, and inspect every pair before you buy — all in your browser." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+    <!-- Navigation -->
+    <header class="navbar" id="navbar">
+      <nav class="nav-inner">
+        <a href="#" class="nav-brand">
+          <svg class="brand-icon" width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="#111"/><path d="M7 19c0-2 1.5-3 3.5-3 1.2 0 2.1.5 2.8 1.2.7.7 1.2 1.6 1.2 2.8H7zm7-8c0-1.5-1-2.5-2.5-2.5S9 9.5 9 11s1 2.5 2.5 2.5S14 12.5 14 11z" fill="#fff"/><path d="M21 16c0 1.5-1 2.5-2.5 2.5S16 17.5 16 16h5zm-3 3c-1.5 0-2.5-1-2.5-2.5v-1c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5v1c0 1.5-1 2.5-2.5 2.5z" fill="#ff3366"/></svg>
+          ShoeVue
+        </a>
+        <ul class="nav-links">
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#products">Shop</a></li>
+          <li><a href="#features">Why ShoeVue</a></li>
+          <li><a href="#about">Our Story</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="nav-icon-btn" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <button class="nav-icon-btn cart-btn" aria-label="Cart" id="cart-toggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cart-count">0</span>
+          </button>
+          <a href="#products" class="nav-shop-btn">Shop Now</a>
+          <button class="nav-mobile-toggle" id="mobile-menu-toggle" aria-label="Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </nav>
+      <div class="mobile-menu" id="mobile-menu">
+        <ul>
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#products">Shop</a></li>
+          <li><a href="#features">Why ShoeVue</a></li>
+          <li><a href="#about">Our Story</a></li>
+        </ul>
+        <a href="#products" class="mobile-shop-btn">Shop Now</a>
+      </div>
+    </header>
+
+    <!-- Hero banner -->
+    <section class="hero" id="collection">
+      <div class="hero-bg-gradient"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-badge">New Season '26</span>
+        </div>
+        <h1 class="hero-title">
+          Step into<br><em>the future</em>
+        </h1>
+        <p class="hero-sub">
+          Inspect every angle before you buy.<br>Authentic 3D models — no stock photos, no guesswork.
+        </p>
+        <div class="hero-actions">
+          <a href="#products" class="hero-primary">Explore Collection</a>
+          <a href="#features" class="hero-secondary">How it works</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">30</span>
+            <span class="stat-label">Day Returns</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">10</span>
+            <span class="stat-label">3D Models</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Authentic</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Three.js canvas -->
+      <div id="canvas-container">
+        <div class="canvas-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          Click any shoe to inspect · Scroll to zoom when zoomed
+        </div>
+
+        <!-- Zoom-mode overlay -->
+        <div id="zoom-ui" class="zoom-ui hidden">
+          <button id="zoom-back" class="zoom-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+          </button>
+          <div class="zoom-info">
+            <span class="zoom-label">Inspecting</span>
+            <p id="zoom-name">Nike Air</p>
+            <p id="zoom-color">Triple White</p>
+            <div class="zoom-actions">
+              <button class="zoom-cart" id="zoom-add-cart">Add to Cart</button>
+              <span class="zoom-price" id="zoom-price">USD 129.99</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Grid -->
+    <section class="products-section" id="products">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">The Collection</h2>
+          <p class="section-desc">Every pair, rendered in real-time 3D. Rotate, zoom, inspect — then decide.</p>
+        </div>
+        <div class="products-grid" id="products-grid"></div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why ShoeVue</h2>
+          <p class="section-desc">We rebuilt online sneaker shopping from the ground up.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <h3>True-to-life 3D Inspection</h3>
+            <p>Rotate every pair at 360°. Zoom in on stitching, materials, and texture. It's like holding the shoe in your hands — before it arrives.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3>30-Day Free Returns</h3>
+            <p>Not sure? Send it back. Free return shipping on every order, no questions asked. Shop with confidence — if it doesn't feel right, send it back.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <h3>Secure Checkout</h3>
+            <p>256-bit SSL encryption, verified payments, and buyer protection on every transaction. Your data and money are always safe with us.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3>Fast 2-Day Shipping</h3>
+            <p>Orders placed before 2 PM ship same day. Delivered to your door in 2 business days — tracked, insured, and handled with care.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Verified Authentic</h3>
+            <p>Every pair is sourced from authorized retailers and verified by our authentication team. No fakes, no exceptions — guaranteed genuine.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <h3>Expert Curation</h3>
+            <p>Our team handpicks every model in our collection. Trend-forward, comfort-focused, and always authentic — we only carry what we'd wear ourselves.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About / Brand Story -->
+    <section class="about" id="about">
+      <div class="container about-inner">
+        <div class="about-tag">Our Story</div>
+        <h2>Shopping for shoes shouldn't be a gamble.</h2>
+        <p>ShoeVue was born from a simple frustration: online shoe shopping is broken. You see a photo, you hope it looks real, you order it — and then it arrives and something feels off. The color, the proportion, the texture. You've been there.</p>
+        <p>We built ShoeVue to fix that. Our platform renders every sneaker as a real-time, interactive 3D model. You can spin it, zoom into the heel counter, inspect the mesh pattern — all from your browser, no app needed. It's the most honest product display online.</p>
+        <p>We launched in 2024 with ten hand-selected models and a simple promise: every pair on ShoeVue is authentic, fairly priced, and ready to return — no questions asked. Since then, we've served over 50,000 customers across North America and Europe.</p>
+        <div class="about-actions">
+          <a href="#products" class="cta-btn">Shop the Collection</a>
+          <a href="mailto:hello@shoevue.com" class="cta-btn-secondary">Contact Us</a>
+        </div>
+        <div class="about-stats">
+          <div class="about-stat">
+            <strong>50K+</strong>
+            <span>Customers</span>
+          </div>
+          <div class="about-stat">
+            <strong>99.3%</strong>
+            <span>Satisfaction</span>
+          </div>
+          <div class="about-stat">
+            <strong>10</strong>
+            <span>3D Models</span>
+          </div>
+          <div class="about-stat">
+            <strong>30</strong>
+            <span>Day Returns</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-main">
+        <div class="container footer-grid">
+          <div class="footer-brand-col">
+            <a href="#" class="footer-brand">
+              <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="#fff"/><path d="M7 19c0-2 1.5-3 3.5-3 1.2 0 2.1.5 2.8 1.2.7.7 1.2 1.6 1.2 2.8H7zm7-8c0-1.5-1-2.5-2.5-2.5S9 9.5 9 11s1 2.5 2.5 2.5S14 12.5 14 11z" fill="#111"/><path d="M21 16c0 1.5-1 2.5-2.5 2.5S16 17.5 16 16h5zm-3 3c-1.5 0-2.5-1-2.5-2.5v-1c0-1.5 1-2.5 2.5-2.5s2.5 1 2.5 2.5v1c0 1.5-1 2.5-2.5 2.5z" fill="#ff3366"/></svg>
+              ShoeVue
+            </a>
+            <p class="footer-tagline">The most honest online sneaker shopping experience.</p>
+            <div class="social-links">
+              <a href="#" aria-label="Instagram" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+              <a href="#" aria-label="Twitter / X" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.4-6.4M20 4l-6.4 6.4"/></svg>
+              </a>
+              <a href="#" aria-label="TikTok" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
+              </a>
+              <a href="#" aria-label="YouTube" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-link-col">
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="#products">All Sneakers</a></li>
+              <li><a href="#products">New Arrivals</a></li>
+              <li><a href="#products">Best Sellers</a></li>
+              <li><a href="#products">Sale</a></li>
+            </ul>
+          </div>
+          <div class="footer-link-col">
+            <h4>Help</h4>
+            <ul>
+              <li><a href="#">Size Guide</a></li>
+              <li><a href="#">Shipping Info</a></li>
+              <li><a href="#">Returns & Exchanges</a></li>
+              <li><a href="#">Track Order</a></li>
+              <li><a href="#">FAQs</a></li>
+            </ul>
+          </div>
+          <div class="footer-link-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#about">Our Story</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="mailto:hello@shoevue.com">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <span>&copy; 2026 ShoeVue Inc. All rights reserved.</span>
+          <div class="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Preferences</a>
+          </div>
+          <div class="footer-payments">
+            <span>Pay</span>
+            <span>Visa</span>
+            <span>MC</span>
+            <span>Amex</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- App pages (checkout / confirmation) -->
+    <div id="page-checkout" class="app-page"></div>
+    <div id="page-confirmation" class="app-page"></div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      const SHOE_DATA = [
+        { name: 'Nike Air', price: 189.99, color: 'Triple White', gradient: ['#f5f5f5','#e8e8e8'] },
+        { name: 'Runner', price: 159.99, color: 'Solar Red', gradient: ['#e63946','#c1121f'] },
+        { name: 'Boots', price: 219.99, color: 'Desert Tan', gradient: ['#c49a6c','#a07850'] },
+        { name: 'Salomon XT6', price: 199.99, color: 'Storm Grey', gradient: ['#6c7a89','#4a5568'] },
+        { name: 'Vans Old Skool', price: 79.99, color: 'Navy/White', gradient: ['#1a2a4a','#0f1a30'] },
+        { name: 'Sneaker B33', price: 149.99, color: 'Ocean Blue', gradient: ['#3a86ff','#2667d4'] },
+        { name: 'Sneaker Vibe', price: 174.99, color: 'Forest Green', gradient: ['#2d6a4f','#1b4332'] },
+        { name: 'Sneakers', price: 139.99, color: 'Cloud White', gradient: ['#f8f9fa','#e9ecef'] },
+        { name: 'Sneakers Seen', price: 164.99, color: 'Ink Black', gradient: ['#212529','#0d0f10'] },
+        { name: '3D Scan Sneaker', price: 209.99, color: 'Lunar Grey', gradient: ['#adb5bd','#868e96'] },
+      ];
+
+      const grid = document.getElementById('products-grid');
+      SHOE_DATA.forEach((shoe, i) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.dataset.index = i;
+        card.innerHTML = `
+          <div class="product-card-image" style="background: linear-gradient(135deg, ${shoe.gradient[0]}, ${shoe.gradient[1]})">
+            <div class="product-card-model">${shoe.name}</div>
+            <div class="product-card-3d-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              3D
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-info">
+              <h3 class="product-card-name">${shoe.name}</h3>
+              <p class="product-card-color">${shoe.color}</p>
+            </div>
+            <div class="product-card-bottom">
+              <span class="product-card-price">$${shoe.price.toFixed(2)}</span>
+              <button class="product-card-add" data-name="${shoe.name}" data-price="${shoe.price}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      let cart = [];
+      const cartToggle = document.getElementById('cart-toggle');
+      const cartDrawer = document.getElementById('cart-drawer');
+      const cartOverlay = document.getElementById('cart-overlay');
+      const cartClose = document.getElementById('cart-close');
+      const cartCount = document.getElementById('cart-count');
+      const cartItemsEl = document.getElementById('cart-items');
+      const cartFooter = document.getElementById('cart-footer');
+      const cartSubtotalPrice = document.getElementById('cart-subtotal-price');
+
+      function openCart() {
+        cartDrawer.classList.add('open');
+        cartOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeCart() {
+        cartDrawer.classList.remove('open');
+        cartOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      cartToggle.addEventListener('click', openCart);
+      cartClose.addEventListener('click', closeCart);
+      cartOverlay.addEventListener('click', closeCart);
+
+      function updateCart() {
+        cartCount.textContent = cart.length;
+        cartCount.classList.toggle('visible', cart.length > 0);
+        if (cart.length === 0) {
+          cartItemsEl.innerHTML = `
+            <div class="cart-empty">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+              <p>No items yet</p>
+              <span>Browse the collection and add your favorites.</span>
+            </div>`;
+          cartFooter.classList.add('hidden');
+        } else {
+          cartItemsEl.innerHTML = cart.map((item, i) => `
+            <div class="cart-item">
+              <div class="cart-item-thumb" style="background: linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})">
+                <span>${item.name.charAt(0)}</span>
+              </div>
+              <div class="cart-item-info">
+                <strong>${item.name}</strong>
+                <span>${item.color}</span>
+              </div>
+              <div class="cart-item-right">
+                <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+                <button class="cart-item-remove" data-i="${i}">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            </div>`).join('');
+          const subtotal = cart.reduce((s, i) => s + i.price, 0);
+          cartSubtotalPrice.textContent = `$${subtotal.toFixed(2)}`;
+          cartFooter.classList.remove('hidden');
+          cartItemsEl.querySelectorAll('.cart-item-remove').forEach(btn => {
+            btn.addEventListener('click', () => {
+              cart.splice(parseInt(btn.dataset.i), 1);
+              updateCart();
+            });
+          });
+        }
+      }
+
+      document.addEventListener('click', e => {
+        const addBtn = e.target.closest('.product-card-add');
+        if (addBtn) {
+          const name = addBtn.dataset.name;
+          const price = parseFloat(addBtn.dataset.price);
+          const shoeEntry = SHOE_DATA.find(s => s.name === name);
+          cart.push({ name, price, color: shoeEntry.color, gradient: shoeEntry.gradient });
+          updateCart();
+          openCart();
+        }
+      });
+
+      // zoom Add to Cart → handled by main.js (openProductPanel)
+      // window.shopOpenCart is set by main.js module
+
+      document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.toggle('open');
+      });
+      document.querySelectorAll('#mobile-menu a').forEach(a => {
+        a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+      });
+
+      window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+      });
+    </script>
+  </body>
+</html>
